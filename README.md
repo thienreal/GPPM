@@ -8,7 +8,7 @@ GPPM is a project developed as part of the Software Solutions 2025 competition, 
 
 ## Competition Information
 - **Competition**: Software Solutions 2025
-- **Repository**: GPPM (thienreal/GPPM)
+- **Project Name**: GPPM
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
