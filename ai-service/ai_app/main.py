@@ -8,24 +8,43 @@ import io
 from PIL import Image
 
 # Thêm dermatology_module vào Python path
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "dermatology_module"))
+# Đường dẫn tuyệt đối để tránh lỗi khi chạy từ các thư mục khác nhau
+WORKSPACE_ROOT = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(WORKSPACE_ROOT / "dermatology_module"))
+sys.path.insert(0, str(WORKSPACE_ROOT))
 
-from dermatology_module.analyzer import DermatologyAnalyzer
-from dermatology_module.models import AnalysisResult as DermAnalysisResult
+import importlib
+
+# We'll try to import the real DermatologyAnalyzer lazily; if it fails (missing heavy deps)
+# we'll fall back to a lightweight stub implementation below.
+
 
 from .schemas import AnalyzeResult, Symptoms, DiseaseInfo
 from .logic.rules import decide_risk
 
 app = FastAPI(title="DermaSafe-AI Service", version="0.3.0")
 
-# Khởi tạo DermatologyAnalyzer
+# Khởi tạo DermatologyAnalyzer (thử import bằng importlib để tránh import-time errors)
+DERMATOLOGY_ANALYZER = None
+DermAnalysisResult = None
 try:
-    DERMATOLOGY_ANALYZER = DermatologyAnalyzer()
-    print("✅ DermatologyAnalyzer đã được khởi tạo thành công")
+    analyzer_mod = importlib.import_module("dermatology_module.analyzer")
+    models_mod = importlib.import_module("dermatology_module.models")
+    DermatologyAnalyzer = analyzer_mod.DermatologyAnalyzer
+    DermAnalysisResult = models_mod.AnalysisResult
+    try:
+        DERMATOLOGY_ANALYZER = DermatologyAnalyzer()
+        print("✅ DermatologyAnalyzer đã được khởi tạo thành công")
+    except Exception as e:
+        print(f"⚠️ Không thể khởi tạo DermatologyAnalyzer: {e}")
+        print("⚠️ Sẽ sử dụng stub scores")
+        DERMATOLOGY_ANALYZER = None
 except Exception as e:
-    print(f"⚠️ Không thể khởi tạo DermatologyAnalyzer: {e}")
-    print("⚠️ Sẽ sử dụng stub scores")
+    # Import failed (likely missing heavy deps like torch/open_clip) -> use stub
+    print(f"⚠️ Không thể import dermatology_module: {e}")
+    print("⚠️ Sẽ sử dụng stub implementation cho môi trường test nhẹ")
     DERMATOLOGY_ANALYZER = None
+    DermAnalysisResult = None
 
 
 @app.get("/health")

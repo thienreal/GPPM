@@ -6,6 +6,7 @@ interface DisclaimerModalProps {
   onAccept: () => void;
 }
 
+function DisclaimerModal({ onAccept }: DisclaimerModalProps) {
   const [accepted, setAccepted] = useState(false);
   const { t } = useTranslation();
 
@@ -67,3 +68,5 @@ interface DisclaimerModalProps {
     </div>
   );
 }
+
+export default DisclaimerModal;

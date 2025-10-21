@@ -1,4 +1,4 @@
-from app.logic.rules import decide_risk
+from ai_app.logic.rules import decide_risk
 
 
 def test_rules_severe_symptom_is_high():

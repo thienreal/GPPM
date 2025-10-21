@@ -1,3 +1,9 @@
+import { useTranslation } from 'react-i18next';
+// import './Footer.css';
+
+function Footer() {
+  const { t } = useTranslation();
+  
   return (
     <footer className="w-full bg-white/80 backdrop-blur border-t border-gray-200 mt-8 py-4 px-2 flex flex-col md:flex-row items-center justify-between text-sm text-gray-700 font-sans shadow-sm" role="contentinfo" aria-label="Footer">
       <div className="mb-2 md:mb-0 flex items-center gap-2" aria-label="Disclaimer">
@@ -13,3 +19,5 @@
     </footer>
   );
 }
+
+export default Footer;

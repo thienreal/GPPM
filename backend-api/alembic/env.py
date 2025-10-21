@@ -18,7 +18,7 @@ if config.config_file_name is not None:
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # Import models metadata
-from app.models import Base  # noqa: E402
+from backend_app.models import Base  # noqa: E402
 
 target_metadata = Base.metadata
 

@@ -11,8 +11,8 @@ import os
 # Ensure parent directory is in path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from app.database import engine
-from app.models import Base
+from backend_app.database import engine
+from backend_app.models import Base
 
 if __name__ == "__main__":
     Base.metadata.create_all(bind=engine)
