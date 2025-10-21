@@ -1,0 +1,57 @@
+# General
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.swp
+*.swo
+*.bak
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+.npm/
+.pnp.cjs
+.pnp.loader.mjs
+.pnpm-store/
+coverage/
+dist/
+build/
+.cache/
+.vite/
+.next/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+.pytest_cache/
+.venv/
+venv/
+.envrc
+.mypy_cache/
+
+# Editor/IDE
+.vscode/
+.idea/
+*.iml
+
+# Docker
+**/.dockerignore
+**/Dockerfile*
+
+# OS/Archive
+*.tar
+*.tar.gz
+*.zip
+*.7z
+
+# Test artifacts
+junit.xml
+coverage.xml

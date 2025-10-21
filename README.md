@@ -43,13 +43,15 @@ Chúng tôi đi theo một hướng khác:
 
 ## ✨ Tính năng (Features)
 
-* **Phân tích dựa trên AI:** Sử dụng mô hình Computer Vision (MobileNetV3/EfficientNetV2) để phân tích hình ảnh.
-* **Nhập liệu có cấu trúc:** Người dùng chọn triệu chứng từ **checkboxes** và **dropdowns** (Không cần NLP phức tạp).
-* **Phân loại rủi ro 3 cấp:** Trả về kết quả (Cao/Trung bình/Thấp) rõ ràng.
-* **Giải thích Đơn giản:** Cung cấp lý do ngắn gọn cho kết quả (ví dụ: "Phát hiện triệu chứng nghiêm trọng.").
-* **Giao diện Web:** Truy cập nhanh trên mọi thiết bị mà không cần cài đặt.
-* **Miễn trừ Trách nhiệm:** Tích hợp cảnh báo an toàn chủ động và bị động.
-* **100% Nguồn mở:** Miễn phí, minh bạch, và chào đón sự đóng góp.
+* **🧠 Phân tích AI tiên tiến:** Sử dụng DermLIP - mô hình Computer Vision chuyên biệt cho da liễu, hỗ trợ tiếng Việt đầy đủ
+* **🎯 Chẩn đoán chi tiết:** Cung cấp chẩn đoán chính và các chẩn đoán thay thế với độ tin cậy cụ thể
+* **📋 Khuyến nghị rõ ràng:** Đưa ra hành động cụ thể dựa trên mức độ nghiêm trọng
+* **⚡ Nhập liệu có cấu trúc:** Người dùng chọn triệu chứng từ **checkboxes** và **dropdowns** (Không cần NLP phức tạp)
+* **🚦 Phân loại rủi ro 3 cấp:** Trả về kết quả (Cao/Trung bình/Thấp) rõ ràng
+* **💬 Giải thích Đơn giản:** Cung cấp lý do ngắn gọn và mô tả chi tiết cho kết quả
+* **🌐 Giao diện Web:** Truy cập nhanh trên mọi thiết bị mà không cần cài đặt
+* **⚠️ Miễn trừ Trách nhiệm:** Tích hợp cảnh báo an toàn chủ động và bị động
+* **🔓 100% Nguồn mở:** Miễn phí, minh bạch, và chào đón sự đóng góp
 
 ## 🛠️ Kiến trúc & Công nghệ (Architecture & Tech Stack)
 
@@ -57,9 +59,10 @@ Dự án được xây dựng trên kiến trúc **Microservices** để đảm 
 
 | Service | Công nghệ | Nhiệm vụ |
 | :--- | :--- | :--- |
-| **Frontend** | **React.js** (hoặc Vue.js) | Giao diện người dùng (UI/UX), xử lý tải ảnh và nhập liệu. |
-| **Backend-API** | **Python (FastAPI)**, **PostgreSQL** | API Gateway chính, điều phối yêu cầu, quản lý CSDL (nếu cần). |
-| **AI-Service** | **Python (FastAPI)**, **PyTorch/TensorFlow** | Host mô hình CV (MobileNetV3) và chạy Rules-Engine. |
+| **Frontend** | **React.js** (TypeScript) | Giao diện người dùng (UI/UX), xử lý tải ảnh và nhập liệu. |
+| **Backend-API** | **Python (FastAPI)**, **PostgreSQL** | API Gateway chính, điều phối yêu cầu, quản lý CSDL. |
+| **AI-Service** | **Python (FastAPI)**, **PyTorch**, **DermLIP** | Phân tích ảnh da liễu bằng DermLIP AI model và Rules-Engine. |
+| **Dermatology Module** | **Python**, **OpenCLIP** | Module phân tích chuyên biệt, xử lý ảnh và trả về chẩn đoán. |
 
 ![Sơ đồ kiến trúc 3-service của dự án](docs/images/architecture_diagram.png)
 
@@ -72,12 +75,29 @@ Chúng tôi sử dụng **Docker** và **Docker Compose** để đơn giản hó
 * [Docker Compose](https://docs.docker.com/compose/install/)
 * [Git](https://git-scm.com/)
 
+### 🚀 Quick Start
+
+Cách nhanh nhất để chạy dự án:
+
+```bash
+# Clone và chạy
+git clone https://github.com/thienreal/GPPM.git
+cd GPPM
+./quick_start.sh
+```
+
+Script sẽ tự động:
+- ✅ Kiểm tra Docker và docker-compose
+- 📦 Build Docker images
+- 🚀 Khởi động services
+- 🔍 Test health endpoints
+
 ### Chạy Dự án (Development)
 
 1.  **Clone dự án:**
     ```bash
-    git clone [https://github.com/TEN_CUA_BAN/derma-safe-ai.git](https://github.com/TEN_CUA_BAN/derma-safe-ai.git)
-    cd derma-safe-ai
+    git clone https://github.com/thienreal/GPPM.git
+    cd GPPM
     ```
 
 2.  **Tạo tệp môi trường (Environment Files):**
@@ -97,11 +117,24 @@ Chúng tôi sử dụng **Docker** và **Docker Compose** để đơn giản hó
     ```bash
     docker-compose up -d --build
     ```
+    
+    Lần đầu tiên sẽ mất ~5-10 phút để download DermLIP model (~340MB)
 
 4.  **Truy cập:**
     * **Frontend (Web App):** `http://localhost:3000`
     * **Backend-API (Docs):** `http://localhost:8000/docs`
     * **AI-Service (Docs):** `http://localhost:8001/docs`
+
+5. **Xem logs:**
+    ```bash
+    docker-compose logs -f ai-service
+    ```
+
+### 📚 Tài liệu chi tiết
+
+- **[DERMATOLOGY_INTEGRATION.md](docs/DERMATOLOGY_INTEGRATION.md)** - Hướng dẫn tích hợp dermatology module
+- **[DEVELOPMENT_GUIDELINES.md](DEVELOPMENT_GUIDELINES.md)** - Quy tắc phát triển
+- **[ai-service/README.md](ai-service/README.md)** - Chi tiết về AI Service
 
 ## 🤝 Đóng góp (Contributing)
 
@@ -119,12 +152,28 @@ Trước khi bắt đầu, vui lòng đọc kỹ tệp **[DEVELOPMENT_GUIDELINES
 
 ## 📊 Nguồn dữ liệu & Cảm ơn (Data Sources & Acknowledgments)
 
-Việc huấn luyện mô hình Computer Vision sẽ không thể thực hiện được nếu không có các bộ dữ liệu y tế công cộng tuyệt vời:
+Việc phát triển mô hình Computer Vision sẽ không thể thực hiện được nếu không có các bộ dữ liệu y tế công cộng tuyệt vời và mô hình AI tiên tiến:
 
+* **[DermLIP](https://arxiv.org/abs/2503.14911):** Mô hình CLIP chuyên biệt cho da liễu, được huấn luyện trên Derm1M dataset. Đây là nền tảng cốt lõi cho khả năng phân tích của chúng tôi.
 * **[ISIC (International Skin Imaging Collaboration)](https://www.isic-archive.com/):** Nguồn dữ liệu tiêu chuẩn vàng cho các tổn thương da ác tính và lành tính.
 * **[DermNet](https://dermnetnz.org/):** Một thư viện hình ảnh da liễu khổng lồ cho các bệnh lý phổ thông.
+* **[OpenCLIP](https://github.com/mlfoundations/open_clip):** Framework mã nguồn mở cho CLIP models.
 
-Chúng tôi xin gửi lời cảm ơn sâu sắc đến các tổ chức và nhà nghiên cứu đã duy trì và chia sẻ các bộ dữ liệu này.
+### Trích dẫn (Citation)
+
+Nếu bạn sử dụng dự án này hoặc DermLIP model, vui lòng trích dẫn:
+
+```bibtex
+@misc{yan2025derm1m,
+  title={Derm1M: A Million-Scale Vision-Language Dataset for Dermatology},
+  author={Siyuan Yan and Ming Hu and others},
+  year={2025},
+  eprint={2503.14911},
+  archivePrefix={arXiv}
+}
+```
+
+Chúng tôi xin gửi lời cảm ơn sâu sắc đến các tổ chức và nhà nghiên cứu đã duy trì và chia sẻ các bộ dữ liệu và mô hình này.
 
 ## 📄 Giấy phép (License)
 
